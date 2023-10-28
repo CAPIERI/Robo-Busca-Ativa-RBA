@@ -72,12 +72,12 @@ except Exception as e:
     print(f"Erro ao gerar o arquivo Excel: {str(e)}")
 
 
-def executar_script_gerar_arquivo_convocacao_word():
+def executar_script_gerar_novo_modelo_convocacao():
     # Obter o diretório do arquivo em execução
     diretorio_atual = os.path.dirname(os.path.abspath(__file__))
 
     # Nome do arquivo a ser executado (neste caso, na mesma pasta)
-    caminho_segundo_script = "gerar_arquivo_convocacao_word.py"
+    caminho_segundo_script = "gerar_novo_modelo_convocacao.py"
 
     # Caminho completo para o segundo script
     caminho_completo = os.path.join(diretorio_atual, caminho_segundo_script)
@@ -86,4 +86,4 @@ def executar_script_gerar_arquivo_convocacao_word():
     subprocess.call(["python", caminho_completo])
 
 
-executar_script_gerar_arquivo_convocacao_word()
+executar_script_gerar_novo_modelo_convocacao()

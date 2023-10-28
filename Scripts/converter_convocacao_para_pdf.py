@@ -8,11 +8,11 @@ from io import BytesIO
 import os
 
 # Caminho para o arquivo Word recuperado
-caminho_arquivo_word = 'ArquivosGerados/documento_convocacao_recuperado.docx'
+caminho_arquivo_word = 'ArquivosGerados/documento_convocacao.docx'
 
-convert('ArquivosGerados/documento_convocacao_recuperado.docx')
+convert('ArquivosGerados/documento_convocacao.docx')
 
-os.rename('ArquivosGerados/documento_convocacao_recuperado.pdf', 'ArquivosGerados/ConvocacaoParaCompensarFaltas.pdf')
+os.rename('ArquivosGerados/documento_convocacao.pdf', 'ArquivosGerados/ConvocacaoParaCompensarFaltas.pdf')
 
 print("Arquivo PDF gerado com quebras de página, exceto na primeira página.")
 

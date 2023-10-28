@@ -8,7 +8,7 @@ import os
 dados = pd.read_excel('ArquivosGerados/dados_filtrados_com_RA_e_Nome_e_Série.xlsx')
 
 # Abra o arquivo Word de modelo (documento_base)
-modelo = docx.Document('ArquivosGerados/modelo_convocacao.docx')  # Substitua 'documento_base.docx' pelo caminho do seu arquivo Word de modelo
+modelo = docx.Document('BasesDeDados/CONVOCACAO PARA COMPENSAR FALTAS.docx')  # Substitua 'documento_base.docx' pelo caminho do seu arquivo Word de modelo
 
 # Crie um novo documento Word
 novo_doc = docx.Document()
@@ -40,6 +40,12 @@ for i, linha in dados.iterrows():
     if i < len(dados) - 1:
         novo_doc.paragraphs[-1].runs[0].add_break(docx.enum.text.WD_BREAK.PAGE)
 
+# Salve o novo documento Word com as páginas duplicadas e as substituições
+novo_arquivo = 'ArquivosGerados/documento_convocacao.docx'
+novo_doc.save(novo_arquivo)
+
+print("Arquivo Word gerado com páginas separadas para cada aluno e as substituições de dados mantendo o estilo original.")
+
 # Função para adicionar quebras de página antes de cada ocorrência de "GOVERNO DO ESTADO DE SÃO PAULO"
 def adicionar_quebras_de_pagina(doc):
     primeira_pagina = True  # Flag para controlar a primeira página
@@ -59,16 +65,6 @@ def remover_primeiro_paragrafo(doc):
         # Se houver parágrafos, exclua o primeiro
         primeiro_paragrafo = doc.paragraphs[0]
         doc.element.body.remove(primeiro_paragrafo._element)
-
-# Salve o novo documento Word com as páginas duplicadas e as substituições
-novo_arquivo = 'ArquivosGerados/documento_convocacao.docx'
-adicionar_quebras_de_pagina(novo_doc)
-remover_primeiro_paragrafo(novo_doc)
-novo_doc.save(novo_arquivo)
-
-print("Arquivo Word gerado com páginas separadas para cada aluno e as substituições de dados mantendo o estilo original.")
-
-
 
 # Função para executar o segundo script
 def executar_script_converter_convocacao_para_pdf():

@@ -1,4 +1,6 @@
 import docx
+from docxtpl import DocxTemplate
+from pathlib import Path
 import sys
 import os
 import subprocess
@@ -7,23 +9,17 @@ from PyQt5.QtCore import QObject, pyqtSignal
 
 # Dicionário de padrões a serem substituídos
 padroes = {
-    '{{DIRETORIA}}': '',
-    '{{ESCOLA}}': '',
-    '{{RUA}}': '',
-    '{{NUMERO}}': '',
-    '{{BAIRRO}}': '',
-    '{{CIDADE}}': '',
-    '{{ESTADO}}': '',
-    '{{CEP}}': '',
-    '{{TELEFONE}}': '',
-    '{{EMAIL}}': '',
+    'DIRETORIA': '',
+    'NOME DA ESCOLA': '',
+    'RUA': '',
+    'NÚMERO DO ENDEREÇO': '',
+    'BAIRRO': '',
+    'CIDADE': '',
+    'ESTADO': '',
+    'CEP': '',
+    'TELEFONE': '',
+    'EMAIL': '',
 }
-
-# Função para substituir os padrões no documento
-def substituir_padroes(doc, padroes):
-    for paragrafo in doc.paragraphs:
-        for padrao, substituicao in padroes.items():
-            paragrafo.text = paragrafo.text.replace(padrao, substituicao)
 
 # Classe para sinais
 class Sinais(QObject):
@@ -70,17 +66,20 @@ class Formulario(QMainWindow):
 
     # Substitua os padrões no documento Word
     def substituir_no_documento(self):
-        # Abra o arquivo Word de modelo
-        modelo = docx.Document('BasesDeDados/CONVOCACAO PARA COMPENSAR FALTAS.docx')
+        # Obtém o diretório do script
+        script_path = Path(__file__).resolve().parent
 
-        # Substitua os padrões no modelo
-        substituir_padroes(modelo, padroes)
+        # Obtém o caminho absoluto para o arquivo
+        document_path_base_dados = script_path.parent / "BasesDeDados" / "CONVOCACAO_PARA_COMPENSAR_FALTAS.docx"
+
+        doc = DocxTemplate(document_path_base_dados)
+        doc.render(padroes)
 
         # Salve o novo documento Word
-        novo_arquivo = 'ArquivosGerados/modelo_convocacao.docx'
-        modelo.save(novo_arquivo)
+        document_path_arquivos_gerados = script_path.parent / "ArquivosGerados" / "modelo_convocacao.docx"
+        doc.save(Path(__file__).parent / document_path_arquivos_gerados)
 
-        print(f'Documento gerado e salvo em {novo_arquivo}')
+        print(f'Documento gerado e salvo em ')
 
     def closeEvent(self, event):
         self.sinais.fechar_janela.emit()

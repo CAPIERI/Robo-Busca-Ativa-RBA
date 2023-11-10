@@ -27,8 +27,8 @@ context = {
     "ESTADO": "",
     "CEP": "",
     "TELEFONE": "",
-    "EMAIL": "",
-    "ANO": ano_atual.strftime("%Y")
+    "EMAIL": ""
+    # "ANO": ano_atual.strftime("%Y")
 }
 novo_modelo.render(context)
 novo_modelo.save("Convocacao.docx")

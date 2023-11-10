@@ -1,74 +1,71 @@
-import docx
+from docxtpl import DocxTemplate
+from pathlib import Path
 import pandas as pd
-import copy
-import subprocess
+from docx import Document
 import os
+import subprocess
+from docx.shared import Pt
 
 # Carregue a planilha 'dados_filtrados_agregados'
 dados = pd.read_excel('ArquivosGerados/dados_filtrados_com_RA_e_Nome_e_Série.xlsx')
 
-# Abra o arquivo Word de modelo (documento_base)
-modelo = docx.Document('ArquivosGerados/modelo_convocacao.docx')  # Substitua 'documento_base.docx' pelo caminho do seu arquivo Word de modelo
+# Obtém o diretório do script
+script_path = Path(__file__).resolve().parent
 
-# Crie um novo documento Word
-novo_doc = docx.Document()
+# Obtém o caminho absoluto para o arquivo do modelo
+modelo_path = script_path.parent / "ArquivosGerados" / "modelo_convocacao.docx"
 
-# Variável para rastrear o título anterior
-titulo_anterior = None
+# Caminho para salvar o documento gerado
+output_path = script_path.parent / "ArquivosGerados" / "documento_convocacao.docx"
 
-# Itere sobre os dados da planilha
-for i, linha in dados.iterrows():
+# Lista para armazenar os contextos de cada aluno
+contextos = []
+
+# Itere sobre os dados da planilha e armazene os contextos em uma lista
+for _, linha in dados.iterrows():
     nome = linha['Nome']
     numero = linha['RA']
     serie = linha['Série']
 
-    # Copie o conteúdo do modelo para o novo documento com o mesmo estilo
-    for elemento in modelo.element.body:
-        novo_elemento = copy.deepcopy(elemento)
-        novo_doc.element.body.append(novo_elemento)
+    context = {
+        'ALUNO': nome,
+        'RA': numero,
+        'SERIE': serie
+    }
 
-    # Substitua apenas o padrão, mantendo o estilo
-    for paragrafo in novo_doc.paragraphs:
-        for run in paragrafo.runs:
-            texto = run.text
-            texto = texto.replace('XXXX', nome)
-            texto = texto.replace('YYYY', str(numero))
-            texto = texto.replace('ZZZZ', serie)
-            run.text = texto
+    contextos.append(context)
+
+# Lista para armazenar os elementos de parágrafo e run de cada documento temporário
+elementos_temporarios = []
+
+# Crie um novo documento para cada aluno e adicione os elementos à lista
+for i, contexto in enumerate(contextos):
+    # Crie um novo objeto DocxTemplate
+    template = DocxTemplate(modelo_path)
+
+    # Renderize as variáveis no modelo
+    template.render(contexto)
+
+    # Adicione os elementos do documento temporário à lista
+    for element in template.element.body:
+        elementos_temporarios.append(element)
 
     # Adicione uma quebra de página após cada aluno, exceto o último
-    if i < len(dados) - 1:
-        novo_doc.paragraphs[-1].runs[0].add_break(docx.enum.text.WD_BREAK.PAGE)
+    if i < len(contextos) - 1:
+        # Adicione uma quebra de página diretamente
+        quebra_pagina = Document()
+        quebra_pagina.add_page_break()
+        elementos_temporarios.append(quebra_pagina.element.body)
 
-# Função para adicionar quebras de página antes de cada ocorrência de "GOVERNO DO ESTADO DE SÃO PAULO"
-def adicionar_quebras_de_pagina(doc):
-    primeira_pagina = True  # Flag para controlar a primeira página
-    for paragrafo in doc.paragraphs:
-        if "GOVERNO DO ESTADO DE SÃO PAULO" in paragrafo.text:
-            if primeira_pagina:
-                primeira_pagina = False  # Desativa a flag na primeira ocorrência
-            else:
-                paragrafo.clear()
-                run = paragrafo.add_run()
-                run.add_break(docx.enum.text.WD_BREAK.PAGE)
-                run.add_text("GOVERNO DO ESTADO DE SÃO PAULO")
+# Crie um novo documento final e adicione os elementos da lista
+documento_final = Document()
+for element in elementos_temporarios:
+    documento_final.element.body.append(element)
 
-def remover_primeiro_paragrafo(doc):
-    # Verifique se o documento tem parágrafos
-    if len(doc.paragraphs) > 0:
-        # Se houver parágrafos, exclua o primeiro
-        primeiro_paragrafo = doc.paragraphs[0]
-        doc.element.body.remove(primeiro_paragrafo._element)
+# Salve o documento final
+documento_final.save(output_path)
 
-# Salve o novo documento Word com as páginas duplicadas e as substituições
-novo_arquivo = 'ArquivosGerados/documento_convocacao.docx'
-adicionar_quebras_de_pagina(novo_doc)
-remover_primeiro_paragrafo(novo_doc)
-novo_doc.save(novo_arquivo)
-
-print("Arquivo Word gerado com páginas separadas para cada aluno e as substituições de dados mantendo o estilo original.")
-
-
+print("Arquivo Word gerado com uma página para cada aluno e as substituições de dados mantendo o estilo original.")
 
 # Função para executar o segundo script
 def executar_script_converter_convocacao_para_pdf():
@@ -86,4 +83,3 @@ def executar_script_converter_convocacao_para_pdf():
 
 # Execute o segundo script
 executar_script_converter_convocacao_para_pdf()
-

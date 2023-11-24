@@ -52,7 +52,6 @@ def renomear_arquivos_excel():
                                     os.rename(caminho_arquivo, novo_nome_arquivo)
                                     wb.save(novo_nome_arquivo)
                                     break
-
-# Exemplo de uso
+                                
 renomear_arquivos_excel()
 print("Arquivos renomeados com sucesso")

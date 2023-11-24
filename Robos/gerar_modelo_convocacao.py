@@ -3,6 +3,23 @@ from pathlib import Path
 import datetime
 
 ano_atual = datetime.datetime.today()
+# Inicializando as variáveis globais
+regiao = None
+departamento = None
+rua = None
+numero_endereco = None
+bairro = None
+cidade = None
+estado = None
+cep = None
+telefone = None
+email = None
+
+dados_modelo_convocacao = {
+    "departamento":["", "", ""],
+}
+
+dados_modelo_convocacao.get("departamento")
 
 # INTERFACE GRÀFICA
 ##----
@@ -16,16 +33,16 @@ def substituir_documento():
     doc = DocxTemplate(document_path_base_dados)
     # Dicionário de padrões a serem substituídos
     padroes = {
-        'DIRETORIA': '',
-        'NOME DA ESCOLA': '',
-        'RUA': '',
-        'NÚMERO DO ENDEREÇO': '',
-        'BAIRRO': '',
-        'CIDADE': '',
-        'ESTADO': '',
-        'CEP': '',
-        'TELEFONE': '',
-        'EMAIL': '',
+        'REGIAO': regiao,
+        'DEPARTAMENTO': departamento,
+        'RUA': rua,
+        'NUMERO': numero_endereco,
+        'BAIRRO': bairro,
+        'CIDADE': cidade,
+        'ESTADO': estado,
+        'CEP': cep,
+        'TELEFONE': telefone,
+        'EMAIL': email,
         'ANO': ano_atual.strftime("%Y"),
         "ALUNO": "{{ALUNO}}",
         "RA": "{{RA}}",

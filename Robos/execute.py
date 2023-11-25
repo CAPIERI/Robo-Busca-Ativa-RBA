@@ -14,7 +14,7 @@ def executar_script_renomeia_tabelas():
     # Executar o segundo script
     subprocess.call(["python", caminho_completo])
 
-def executar_script_gerar_planilia_alunos_convocados():
+def executar_script_gerar_planilha_alunos_convocados():
     # Obter o diretório do arquivo em execução
     diretorio_atual = os.path.dirname(os.path.abspath(__file__))
 
@@ -57,10 +57,7 @@ def executar_script_gerar_arquivos_convocacao():
     subprocess.call(["python", caminho_completo])
 
 
-def executar_script_unir_convocacoes():
-    pass
 
 executar_script_renomeia_tabelas()
-executar_script_gerar_planilia_alunos_convocados()
-executar_script_gerar_modelo_convocacao()
+executar_script_gerar_planilha_alunos_convocados()
 executar_script_gerar_arquivos_convocacao()

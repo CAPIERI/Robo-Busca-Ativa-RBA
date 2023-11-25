@@ -3,26 +3,6 @@ from pathlib import Path
 import datetime
 
 ano_atual = datetime.datetime.today()
-# Inicializando as variáveis globais
-regiao = None
-departamento = None
-rua = None
-numero_endereco = None
-bairro = None
-cidade = None
-estado = None
-cep = None
-telefone = None
-email = None
-
-dados_modelo_convocacao = {
-    "departamento":["", "", ""],
-}
-
-dados_modelo_convocacao.get("departamento")
-
-# INTERFACE GRÀFICA
-##----
 
 def substituir_documento():
     # Obtém o diretório do script
@@ -56,5 +36,4 @@ def substituir_documento():
     doc.save(Path(__file__).parent / document_path_arquivos_gerados)
 
     print(f'Documento gerado e salvo em {document_path_arquivos_gerados}')
-
 substituir_documento()

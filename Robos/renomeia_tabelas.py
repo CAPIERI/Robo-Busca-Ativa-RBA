@@ -1,9 +1,7 @@
 import os
 import openpyxl
 import re 
-import subprocess
 
-##PASSAR TUDO ISSO PARA INTERFACE
 # Obter o diretório base do usuário atual
 diretorio_base_usuario = os.path.expanduser("~")
 
@@ -12,7 +10,6 @@ diretorio_arquivos = os.path.join(diretorio_base_usuario, "Downloads")
 
 # Agora, diretorio_arquivos conterá o caminho para o diretório "Downloads" do usuário atual, independente do nome de usuário.
 print("Renomeando os item da pasta Downloads " + diretorio_arquivos)
-
 
 # Função para extrair a série e o número de uma célula
 def extrair_serie_e_numero(celula):

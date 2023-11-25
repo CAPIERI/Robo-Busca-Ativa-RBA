@@ -23,9 +23,9 @@ for _,linha in dados.iterrows():
     serie = linha["Série"]
 
     aluno = {
-        'ALUNO': nome,
-        'RA': numero,
-        'SERIE': serie
+        'ALUNO': nome.upper(),
+        'RA': numero.upper(),
+        'SERIE': serie.upper()
     }
 
     # Selecionar uma chave específica do dicionário (por exemplo, 'ALUNO') para compor o nome do arquivo

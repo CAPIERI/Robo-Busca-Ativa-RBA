@@ -1,34 +1,23 @@
-from docxtpl import DocxTemplate
+from docxcompose.composer import Composer
+from docx import Document
 from pathlib import Path
-import datetime
+import os
+import shutil
+from docx import *
 
-ano_atual = datetime.datetime.today()
+diretorio = Path(__file__).parent / "ArquivosGerados/Documentos Individuais"
+arquivos = os.listdir(diretorio)
+arquivos_listados = [arquivo for arquivo in arquivos if arquivo.endswith('.docx')]
 
-# Obtém o diretório do script
-script_path = Path(__file__).resolve().parent
+doc_inicial = Path(diretorio / f'{arquivos_listados[0]}')
+doc_todas_conv = diretorio.parent / "Todas_convocações.docx"
+shutil.copyfile(doc_inicial, doc_todas_conv)
 
-# Obtém o caminho absoluto para o arquivo
-document_path = script_path.parent / "BasesDeDados" / "CONVOCACAO_PARA_COMPENSAR_FALTAS.docx"
-
-# Imprime o caminho para verificar se está correto
-print(f"Caminho do arquivo: {document_path}")
-
-# Agora você pode usar document_path para abrir o arquivo
-
-novo_modelo = DocxTemplate(document_path)
-
-context = {
-    "REGIAO": "jojo",
-    "DEPARTAMENTO": "okpk",
-    "RUA": "okpkp",
-    "NUMERO": "klplp",
-    "JARDIM": "",
-    "CIDADE": "",
-    "ESTADO": "",
-    "CEP": "",
-    "TELEFONE": "",
-    "EMAIL": ""
-    # "ANO": ano_atual.strftime("%Y")
-}
-novo_modelo.render(context)
-novo_modelo.save("Convocacao.docx")
+for arquivo in arquivos_listados[1:]:
+    arquivo_temp = Path(diretorio) / f'{arquivo}'
+    master = Document(doc_todas_conv)
+    master.add_page_break()
+    composer = Composer(master)
+    doc = Document(arquivo_temp)
+    composer.append(doc)
+    composer.save(doc_todas_conv)

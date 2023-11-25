@@ -1,7 +1,12 @@
 import pandas as pd
 from pathlib import Path
 from docxtpl import DocxTemplate
+from docxcompose.composer import Composer
+from docx import Document
+from docx2pdf import convert
 import os
+import shutil
+import subprocess
 
 # Carregue a planilha 'alunos_para_convocacao'
 dados = pd.read_excel('ArquivosGerados/alunos_para_convocacao.xlsx')
@@ -37,3 +42,43 @@ for _,linha in dados.iterrows():
     doc.save(caminho_arquivo)
 
     alunos.append(aluno)
+
+def unir_convocacoes():
+    diretorio = Path(__file__).parent.parent / "ArquivosGerados/Documentos Individuais"
+    arquivos = os.listdir(diretorio)
+    arquivos_listados = [arquivo for arquivo in arquivos if arquivo.endswith('.docx')]
+
+    doc_inicial = Path(diretorio / f'{arquivos_listados[0]}')
+    doc_todas_conv = diretorio.parent / "Todas_convocações.docx"
+    shutil.copyfile(doc_inicial, doc_todas_conv)
+
+    for arquivo in arquivos_listados[1:]:
+        arquivo_temp = Path(diretorio) / f'{arquivo}'
+        master = Document(doc_todas_conv)
+        master.add_page_break()
+        composer = Composer(master)
+        doc = Document(arquivo_temp)
+        composer.append(doc)
+        composer.save(doc_todas_conv)
+
+unir_convocacoes()
+
+def executar_script_converter_convocacao_para_pdf():
+    # Obter o diretório do arquivo em execução
+    diretorio_atual = os.path.dirname(os.path.abspath(__file__))
+
+    # Nome do arquivo a ser executado (neste caso, na mesma pasta)
+    caminho_segundo_script = "converter_convocacao_para_pdf.py"
+
+    # Caminho completo para o segundo script
+    caminho_completo = os.path.join(diretorio_atual, caminho_segundo_script)
+
+    # Executar o segundo script
+    subprocess.call(["python", caminho_completo])
+
+# Execute o segundo script
+executar_script_converter_convocacao_para_pdf()
+
+def converter_para_pdf():
+    convert(Path(__file__).parent.parent / "ArquivosGerados/Todas_convocações.docx", Path(__file__).parent.parent / "ArquivosGerados")
+converter_para_pdf()

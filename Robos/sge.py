@@ -5,13 +5,23 @@ from docxtpl import DocxTemplate
 from pathlib import Path
 import datetime
 
-def executar():
-    criar_modelo_convocacao
+diretorio_padrao = Path(__file__).home() / "Downloads"
+
+def alterar_diretorio_padrao():
+    pass
+def executar_script_renomeia_tabelas():
+    diretorio_atual = Path(__file__).parent / "renomeia_tabelas.py"
+    subprocess.call(["python", diretorio_atual])
+
+def executar_script_gerar_planilha_alunos_convocados():
+    diretorio_atual = Path(__file__).parent / "gerar_planilha_alunos_convocados.py"
+    subprocess.call(["python", diretorio_atual])
+
     # Obter o diretório do arquivo em execução
     diretorio_atual = os.path.dirname(os.path.abspath(__file__))
 
     # Nome do arquivo a ser executado (neste caso, na mesma pasta)
-    caminho_segundo_script = "execute.py"
+    caminho_segundo_script = "gerar_modelo_convocacao.py"
 
     # Caminho completo para o segundo script
     caminho_completo = os.path.join(diretorio_atual, caminho_segundo_script)
@@ -19,25 +29,40 @@ def executar():
     # Executar o segundo script
     subprocess.call(["python", caminho_completo])
 
+def executar_script_gerar_arquivos_convocacao():
+    diretorio_atual = Path(__file__).parent / "gerar_arquivos_convocacao.py"
+    subprocess.call(["python", diretorio_atual])    
+
+def enviar_email():
+    diretorio_atual = Path(__file__).parent / "enviar_email.py"
+    subprocess.call(["python", diretorio_atual])
+
+def executar_tudo():
+    executar_script_renomeia_tabelas()
+    executar_script_gerar_planilha_alunos_convocados()
+    criar_modelo_convocacao()
+    executar_script_gerar_arquivos_convocacao()
+    enviar_email()
+
 def criar_modelo_convocacao():
     ano_atual = datetime.datetime.today()
 
     def substituir_documento():
-        # Obtém o diretório do script
-        script_path = Path(__file__).resolve().parent
+        # # Obtém o diretório do script
+        # script_path = Path(__file__).resolve().parent
         # Obtém o caminho absoluto para o arquivo
-        document_path_base_dados = script_path.parent / "BasesDeDados" / "CONVOCACAO_PARA_COMPENSAR_FALTAS.docx"
+        document_path_base_dados = Path(__file__).parent.parent / "BasesDeDados" / "CONVOCACAO_PARA_COMPENSAR_FALTAS.docx"
 
         doc = DocxTemplate(document_path_base_dados)
         # Dicionário de padrões a serem substituídos
         padroes = {
-            'REGIAO': regiao_escola,
-            'DEPARTAMENTO': departamento,
-            'RUA': rua,
-            'NUMERO': numero_endereco,
-            'BAIRRO': bairro,
-            'CIDADE': cidade,
-            'ESTADO': estado,
+            'REGIAO': regiao_escola.upper(),
+            'DEPARTAMENTO': departamento.upper(),
+            'RUA': rua.capitalize(),
+            'NUMERO': numero_endereco.capitalize(),
+            'BAIRRO': bairro.capitalize(),
+            'CIDADE': cidade.capitalize(),
+            'ESTADO': estado.capitalize(),
             'CEP': cep,
             'TELEFONE': telefone,
             'EMAIL': email,
@@ -45,12 +70,12 @@ def criar_modelo_convocacao():
             "ALUNO": "{{ALUNO}}",
             "RA": "{{RA}}",
             "SERIE": "{{SERIE}}"
-        }
+        }  
 
         doc.render(padroes)
 
         # Salve o novo documento Word
-        document_path_arquivos_gerados = script_path.parent / "ArquivosGerados" / "modelo_convocacao.docx"
+        document_path_arquivos_gerados = Path(__file__).parent.parent / "ArquivosGerados" / "modelo_convocacao.docx"
         doc.save(Path(__file__).parent / document_path_arquivos_gerados)
 
         print(f'Documento gerado e salvo em {document_path_arquivos_gerados}')
@@ -80,11 +105,11 @@ def janela_Modelo_Conv():
     label_modelo_convocacao = ctk.CTkLabel(janela_modelo_convocacao, text="Por Favor preencha as informações da sua Escola:")
     label_modelo_convocacao.pack()
 
-    entry_regiao_escola = ctk.CTkEntry(janela_modelo_convocacao, placeholder_text="Região da Escola")
-    entry_regiao_escola.pack()
-
     entry_departamento_escola = ctk.CTkEntry(janela_modelo_convocacao, placeholder_text="Departamento da Escola")
     entry_departamento_escola.pack()
+
+    entry_regiao_escola = ctk.CTkEntry(janela_modelo_convocacao, placeholder_text="Região da Escola")
+    entry_regiao_escola.pack()
 
     entry_rua = ctk.CTkEntry(janela_modelo_convocacao, placeholder_text="Rua")
     entry_rua.pack()
@@ -125,7 +150,7 @@ label_busca_ativa.pack()
 botao_modelo_conv = ctk.CTkButton(janela_princ, text="Criar Modelo De Convocação", command=janela_Modelo_Conv)
 botao_modelo_conv.pack()
 
-botao_rodar_robo = ctk.CTkButton(janela_princ, text="Rodar", command=executar)
+botao_rodar_robo = ctk.CTkButton(janela_princ, text="Rodar", command=executar_tudo)
 botao_rodar_robo.pack()
 
 diretorio_padrao = ctk.CTk

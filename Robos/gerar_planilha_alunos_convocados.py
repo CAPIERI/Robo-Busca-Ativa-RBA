@@ -1,6 +1,5 @@
 import os
 import pandas as pd
-import subprocess
 
 ##PASSAR TUDO ISSO PARA INTERFACE
 diretorio_base_usuario = os.path.expanduser("~")

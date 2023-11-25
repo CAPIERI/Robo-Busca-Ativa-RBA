@@ -18,7 +18,7 @@ padroes = {
     'ESTADO': '',
     'CEP': '',
     'TELEFONE': '',
-    'EMAIL': '',
+    'EMAIL': ''
 }
 
 # Classe para sinais

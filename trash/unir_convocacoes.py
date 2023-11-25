@@ -5,7 +5,7 @@ import os
 import shutil
 from docx import *
 
-diretorio = Path(__file__).parent / "ArquivosGerados/Documentos Individuais"
+diretorio = Path(__file__).parent.parent / "ArquivosGerados/Documentos Individuais"
 arquivos = os.listdir(diretorio)
 arquivos_listados = [arquivo for arquivo in arquivos if arquivo.endswith('.docx')]
 

@@ -8,8 +8,8 @@ import os
 import shutil
 import subprocess
 
-# Carregue a planilha 'alunos_para_convocacao'
-dados = pd.read_excel('ArquivosGerados/alunos_para_convocacao.xlsx')
+# Carregue a planilha 'RelatorioBuscaAtiva'
+dados = pd.read_excel('ArquivosGerados/RelatorioBuscaAtiva.xlsx')
 
 script_dir = Path(__file__).resolve().parent 
 

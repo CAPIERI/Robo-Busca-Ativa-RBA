@@ -55,7 +55,7 @@ df_completo = pd.concat(dfs, ignore_index=True)
 
 try:
     # Caminho para o arquivo de destino
-    caminho_arquivo = 'ArquivosGerados/alunos_para_convocacao.xlsx'
+    caminho_arquivo = 'ArquivosGerados/RelatorioBuscaAtiva.xlsx'
 
     # Extrair o diretório do caminho do arquivo
     diretorio_destino = os.path.dirname(caminho_arquivo)

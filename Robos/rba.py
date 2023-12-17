@@ -11,7 +11,7 @@ from tkinter import messagebox
 deadline = datetime(2023, 12, 31, 23, 59, 59)
 
 if datetime.today() <= deadline:
-    diretorio_padrao = Path(__file__).home() / "Downloads"
+    diretorio_padrao = "../Planilias"
 
     def alterar_diretorio_padrao():
         pass
@@ -25,15 +25,7 @@ if datetime.today() <= deadline:
 
         # Obter o diretório do arquivo em execução
         diretorio_atual = os.path.dirname(os.path.abspath(__file__))
-
-        # Nome do arquivo a ser executado (neste caso, na mesma pasta)
-        caminho_segundo_script = "gerar_modelo_convocacao.py"
-
-        # Caminho completo para o segundo script
-        caminho_completo = os.path.join(diretorio_atual, caminho_segundo_script)
-
-        # Executar o segundo script
-        subprocess.call(["python", caminho_completo])
+        subprocess.call(["python", diretorio_atual])
 
     def executar_script_gerar_arquivos_convocacao():
         diretorio_atual = Path(__file__).parent / "gerar_arquivos_convocacao.py"
@@ -54,8 +46,6 @@ if datetime.today() <= deadline:
         ano_atual = datetime.today()
 
         def substituir_documento():
-            # # Obtém o diretório do script
-            # script_path = Path(__file__).resolve().parent
             # Obtém o caminho absoluto para o arquivo
             document_path_base_dados = Path(__file__).parent.parent / "BasesDeDados" / "CONVOCACAO_PARA_COMPENSAR_FALTAS.docx"
 
@@ -100,7 +90,6 @@ if datetime.today() <= deadline:
             cep = entry_cep.get()
             telefone = entry_telefone.get()
             email = entry_email.get()
-            # unidades[departamento] = [regiao_escola, rua, numero_endereco, bairro, cidade, estado, cep, telefone, email]
 
             janela_modelo_convocacao.destroy()
 

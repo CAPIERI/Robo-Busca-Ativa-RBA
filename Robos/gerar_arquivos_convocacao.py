@@ -6,7 +6,6 @@ from docx import Document
 from docx2pdf import convert
 import os
 import shutil
-import subprocess
 
 # Carregue a planilha 'RelatorioBuscaAtiva'
 dados = pd.read_excel('ArquivosGerados/RelatorioBuscaAtiva.xlsx')
@@ -29,7 +28,7 @@ for _,linha in dados.iterrows():
 
     aluno = {
         'ALUNO': nome.upper(),
-        'RA': numero.upper(),
+        # 'RA': numero.upper(),
         'SERIE': serie.upper()
     }
 

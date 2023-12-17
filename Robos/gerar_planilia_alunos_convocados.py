@@ -1,10 +1,8 @@
 import os
 import pandas as pd
 
-##PASSAR TUDO ISSO PARA INTERFACE
-diretorio_base_usuario = os.path.expanduser("~")
-# Pasta onde estão as planilhas
-diretorio_arquivos = os.path.join(diretorio_base_usuario, "Downloads")
+#PASSAR TUDO ISSO PARA INTERFACE
+diretorio_arquivos = "Planilias"
 caminho_desempenho = 'BasesDeDados/DESEMPENHO POR ESTUDANTE.xlsx'
 
 # Função para capitalizar a primeira letra de cada palavra

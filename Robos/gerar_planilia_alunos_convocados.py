@@ -1,10 +1,8 @@
 import os
 import pandas as pd
 
-##PASSAR TUDO ISSO PARA INTERFACE
-diretorio_base_usuario = os.path.expanduser("~")
-# Pasta onde estão as planilhas
-diretorio_arquivos = os.path.join(diretorio_base_usuario, "Downloads")
+#PASSAR TUDO ISSO PARA INTERFACE
+diretorio_arquivos = "Planilias"
 caminho_desempenho = 'BasesDeDados/DESEMPENHO POR ESTUDANTE.xlsx'
 
 # Função para capitalizar a primeira letra de cada palavra
@@ -55,7 +53,7 @@ df_completo = pd.concat(dfs, ignore_index=True)
 
 try:
     # Caminho para o arquivo de destino
-    caminho_arquivo = 'ArquivosGerados/alunos_para_convocacao.xlsx'
+    caminho_arquivo = 'ArquivosGerados/RelatorioBuscaAtiva.xlsx'
 
     # Extrair o diretório do caminho do arquivo
     diretorio_destino = os.path.dirname(caminho_arquivo)

@@ -1,8 +1,8 @@
 from docxtpl import DocxTemplate
 from pathlib import Path
-import datetime
+from datetime import datetime
 
-ano_atual = datetime.datetime.today()
+ano_atual = datetime.today()
 
 def substituir_documento():
     # Obtém o diretório do script
